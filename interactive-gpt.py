@@ -9,6 +9,7 @@ Rules:
 - The AI must not mention or suggest the installation of special Python modules in code execution contexts, as these modules are managed automatically. 
 - Make sure your code is correct and functions as requested. Write comments where it’s reasonably necessary.
 - The target operating system for the code is {platform.platform()}.
+- The target python version is {platform.python_version()}.
 - It's important to wrap the code with the python code markdown tag.
 """
 
@@ -126,7 +127,7 @@ def process_user_input(user_input, gpt_model):
     Process user input and interact with the GPT model.
     """
     prompt = f'Write Python code to perform the following task: "{user_input}"\n{rules}'
-    print_colored(f"\n[Generated Prompt]\n{prompt}", "dark_gray")
+    # print_colored(f"\n[Generated Prompt]\n{prompt}", "dark_gray")
     print_colored(" InteractiveGPT: ⌚ Working on your prompt...", "cyan")
 
     chat = openai.ChatCompletion.create(

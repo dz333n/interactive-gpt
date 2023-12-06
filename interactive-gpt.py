@@ -20,7 +20,7 @@ def install_module(module_name):
     Install a Python module using pip.
     """
     log(
-        f"InteractiveGPT: ⚠️ Attempting to install missing module: {module_name}",
+        f"InteractiveGPT: ⚠️  Attempting to install missing module: {module_name}",
         "yellow",
     )
     subprocess.check_call([sys.executable, "-m", "pip", "install", module_name])
@@ -34,11 +34,11 @@ def execute_string_as_code(code_string):
     while True:
         try:
             log(f"\nChatGPT:\n{code_string}\n", "yellow")
-            log("\n   😱😱😱 Executing the code 😱😱😱 \n", "cyan")
+            log("  😱😱😱 Executing the code 😱😱😱 \n", "cyan")
 
             exec(code_string)
 
-            log("InteractiveGPT: ✅ Executed", "green")
+            log("\nInteractiveGPT: ✅ Executed", "green")
             break  # Break the loop if the code executed successfully
         except ModuleNotFoundError as e:
             # Extract the module name from the exception message
@@ -112,15 +112,23 @@ def main():
     if len(sys.argv) > 1:
         gpt_model = sys.argv[1]
 
-    log("Welcome to InteractiveGPT. Replacing humans with AI together!", "green")
-    log("Source code: https://github.com/dz333n/interactive-gpt", "green")
+    log("InteractiveGPT: Hey! I will turn your requests to code and execute.", "cyan")
+    log("InteractiveGPT: ⚠️  This program executes AI-generated code.", "yellow")
     log(
-        f"Using {gpt_model}, platform: {platform.platform()}, python: {platform.python_version()}\n\n",
-        "green",
+        "InteractiveGPT: ⚠️  YOU are solely responsible for understanding and accepting the risks associated with its use.",
+        "yellow",
+    )
+    log(
+        "InteractiveGPT: Source code: https://github.com/dz333n/interactive-gpt",
+        "dark_gray",
+    )
+    log(
+        f"InteractiveGPT: Using {gpt_model}, platform: {platform.platform()}, python: {platform.python_version()}",
+        "dark_gray",
     )
 
     while True:
-        user_input = input("> ")
+        user_input = input("\n> ")
         if user_input.lower() == "exit":
             log("Bye", "cyan")
             break
@@ -149,7 +157,7 @@ def process_user_input(user_input, gpt_model):
 
     code = extract_python_code(reply)
     if not code:
-        log(f"ChatGPT: {reply}", "yellow")
+        log(f"\nChatGPT: {reply}\n", "yellow")
         log(
             f"InteractiveGPT: No code found in GPT's response. Nothing to execute.",
             "red",

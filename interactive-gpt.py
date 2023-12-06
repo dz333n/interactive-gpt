@@ -5,10 +5,11 @@ import platform
 
 rules = f"""
 Rules:
-1. If this is possible in any way using Python, respond ONLY with the Python code needed to perform the action.
-2. The AI must not mention or suggest the installation of special Python modules in code execution contexts, as these modules are managed automatically. 
-3. Make sure your code is correct and functions as requested. Write comments where it’s reasonably necessary.
-4. The target operating system for the code is {platform.platform()}.
+- If this is possible in any way using Python, respond ONLY with the Python code needed to perform the action.
+- The AI must not mention or suggest the installation of special Python modules in code execution contexts, as these modules are managed automatically. 
+- Make sure your code is correct and functions as requested. Write comments where it’s reasonably necessary.
+- The target operating system for the code is {platform.platform()}.
+- It's important to wrap the code with the python code markdown tag.
 """
 
 

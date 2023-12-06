@@ -85,7 +85,7 @@ def extract_python_code(markdown_string):
     python_code = []
 
     for line in lines:
-        if line.strip() == "```python":
+        if line.strip().lower() == "```python":
             start_python_code = True
             continue
         if line.strip() == "```" and start_python_code:

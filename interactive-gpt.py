@@ -155,7 +155,7 @@ def process_user_input(user_input, gpt_model, openai):
 
     reply = ""
 
-    print_gpt("\nChatGPT: ")
+    print_gpt("\nChatGPT:\n")
 
     for chunk in stream:
         if chunk.choices[0].delta.content is not None:

@@ -8,6 +8,8 @@ The simple way for ChatGPT to execute your prompts on your device.
 - `Open Windows explorer`
 - `Open My Documents`
 - `Set Windows volume to 50%`
+- `Create a simple pong game`
+- `Show interactive dialog`
 
 ## How it works?
 

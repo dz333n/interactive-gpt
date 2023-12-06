@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 import subprocess
 import sys
 import platform
@@ -14,6 +14,10 @@ Rules:
 - The target python version is {platform.python_version()}.
 - It's important to wrap the code with the python code markdown tag.
 """
+
+
+def print_gpt(text):
+    print(f"\033[93m{text}", end="\033[93m")
 
 
 def install_module(module_name):
@@ -34,8 +38,7 @@ def execute_string_as_code(code_string):
     """
     while True:
         try:
-            log(f"\nChatGPT:\n{code_string}\n", "yellow")
-            log("  😱😱😱 Executing the code 😱😱😱 \n", "cyan")
+            log("\nInteractiveGPT: 😱😱😱 Executing the code 😱😱😱 \n", "cyan")
 
             exec(code_string)
 
@@ -107,7 +110,7 @@ def main():
         log("Error: provide your OpenAI token in ./token file", "red")
         sys.exit(1)
 
-    openai.api_key = token
+    open_ai = OpenAI(api_key=token)
     gpt_model = "gpt-4"
 
     if len(sys.argv) > 1:
@@ -134,10 +137,10 @@ def main():
             log("Bye", "cyan")
             break
 
-        process_user_input(user_input, gpt_model)
+        process_user_input(user_input, gpt_model, open_ai)
 
 
-def process_user_input(user_input, gpt_model):
+def process_user_input(user_input, gpt_model, openai):
     """
     Process user input and interact with the GPT model.
     """
@@ -146,19 +149,28 @@ def process_user_input(user_input, gpt_model):
     # log(f"\n[Generated Prompt]\n{prompt}", "dark_gray")
     log("InteractiveGPT: ⌚ Processing your prompt...", "cyan")
 
-    chat = openai.ChatCompletion.create(
-        model=gpt_model, messages=[{"role": "user", "content": prompt}]
+    stream = openai.chat.completions.create(
+        model=gpt_model, messages=[{"role": "user", "content": prompt}], stream=True
     )
+
+    reply = ""
+
+    print_gpt("\nChatGPT: ")
+
+    for chunk in stream:
+        if chunk.choices[0].delta.content is not None:
+            part = chunk.choices[0].delta.content
+            reply += part
+            print_gpt(part)
+
+    print()
 
     end_time = time.time()
     time_taken = end_time - start_time
     log(f"InteractiveGPT: Processed in ⌚ {time_taken:.2f} seconds", "cyan")
 
-    reply = chat.choices[0].message.content
-
     code = extract_python_code(reply)
     if not code:
-        log(f"\nChatGPT: {reply}\n", "yellow")
         log(
             f"InteractiveGPT: No code found in GPT's response. Nothing to execute.",
             "red",

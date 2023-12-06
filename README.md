@@ -28,3 +28,8 @@ Key aspects:
 ⚠️ This script is a powerful tool but should be used with caution due to the risks associated with executing dynamically generated code.
 
 Interesting fact: this script and document were written by ChatGPT as part of the program to replace people with artificial intelligence.
+
+## Future Plans
+
+- **History:** save the GPT code outputs locally in order not to lose something interesting
+- **Deep Integration:** would be interesting to make it deeply integrated so that a request like 'analyze file C:\file.json' would be possible

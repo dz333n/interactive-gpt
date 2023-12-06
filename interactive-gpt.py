@@ -19,8 +19,8 @@ def install_module(module_name):
     """
     Install a Python module using pip.
     """
-    print_colored(
-        f" InteractiveGPT: Attempting to install missing module: {module_name}",
+    log(
+        f"InteractiveGPT: ⚠️ Attempting to install missing module: {module_name}",
         "yellow",
     )
     subprocess.check_call([sys.executable, "-m", "pip", "install", module_name])
@@ -33,12 +33,12 @@ def execute_string_as_code(code_string):
     """
     while True:
         try:
-            print_colored(f"\n ChatGPT:\n{code_string}\n", "yellow")
-            print_colored("\n 😱😱😱 Executing the code 😱😱😱 \n", "cyan")
+            log(f"\nChatGPT:\n{code_string}\n", "yellow")
+            log("\n   😱😱😱 Executing the code 😱😱😱 \n", "cyan")
 
             exec(code_string)
 
-            print_colored(" InteractiveGPT: ✅ Executed", "green")
+            log("InteractiveGPT: ✅ Executed", "green")
             break  # Break the loop if the code executed successfully
         except ModuleNotFoundError as e:
             # Extract the module name from the exception message
@@ -46,11 +46,11 @@ def execute_string_as_code(code_string):
 
             install_module(missing_module)
         except Exception as e:
-            print_colored(f" InteractiveGPT: An error occurred: {e}", "red")
+            log(f"InteractiveGPT: An error occurred: {e}", "red")
             break  # Exit the loop if an error other than ModuleNotFoundError occurs
 
 
-def print_colored(text, color):
+def log(text, color):
     """
     Print text in the specified color to the console.
     """
@@ -103,7 +103,7 @@ def main():
     """
     token = read_string_from_file("token")
     if token == "File not found.":
-        print_colored("Error: provide your OpenAI token in ./token file", "red")
+        log("Error: provide your OpenAI token in ./token file", "red")
         sys.exit(1)
 
     openai.api_key = token
@@ -112,12 +112,17 @@ def main():
     if len(sys.argv) > 1:
         gpt_model = sys.argv[1]
 
-    print_colored(f" InteractiveGPT: Using {gpt_model}", "green")
+    log("Welcome to InteractiveGPT. Replacing humans with AI together!", "green")
+    log("Source code: https://github.com/dz333n/interactive-gpt", "green")
+    log(
+        f"Using {gpt_model}, platform: {platform.platform()}, python: {platform.python_version()}\n\n",
+        "green",
+    )
 
     while True:
-        user_input = input(" Your Request: ")
+        user_input = input("> ")
         if user_input.lower() == "exit":
-            print_colored("Bye", "cyan")
+            log("Bye", "cyan")
             break
 
         process_user_input(user_input, gpt_model)
@@ -129,8 +134,8 @@ def process_user_input(user_input, gpt_model):
     """
     start_time = time.time()
     prompt = f'Write Python code to perform the following task: "{user_input}"\n{rules}'
-    # print_colored(f"\n[Generated Prompt]\n{prompt}", "dark_gray")
-    print_colored(" InteractiveGPT: ⌚ Processing your prompt...", "cyan")
+    # log(f"\n[Generated Prompt]\n{prompt}", "dark_gray")
+    log("InteractiveGPT: ⌚ Processing your prompt...", "cyan")
 
     chat = openai.ChatCompletion.create(
         model=gpt_model, messages=[{"role": "user", "content": prompt}]
@@ -138,15 +143,15 @@ def process_user_input(user_input, gpt_model):
 
     end_time = time.time()
     time_taken = end_time - start_time
-    print_colored(f" InteractiveGPT: Processed in ⌚ {time_taken:.2f} seconds", "cyan")
+    log(f"InteractiveGPT: Processed in ⌚ {time_taken:.2f} seconds", "cyan")
 
     reply = chat.choices[0].message.content
 
     code = extract_python_code(reply)
     if not code:
-        print_colored(f" ChatGPT: {reply}", "yellow")
-        print_colored(
-            f" InteractiveGPT: No code found in GPT's response. Nothing to execute.",
+        log(f"ChatGPT: {reply}", "yellow")
+        log(
+            f"InteractiveGPT: No code found in GPT's response. Nothing to execute.",
             "red",
         )
     else:

@@ -2,6 +2,10 @@
 
 The simple way for ChatGPT to execute your prompts on your device.
 
+# ⚠️ IMPORTANT USER RESPONSIBILITY NOTICE ⚠️
+
+**This program executes AI-generated code. Be advised that as a user of this program, YOU are solely responsible for understanding and accepting the risks associated with its use. The code is generated automatically and may have unpredictable behaviors or outcomes. User discretion is advised.**
+
 https://github.com/dz333n/interactive-gpt/assets/25367511/cceb3581-c355-485f-bd06-81b1b35a1e14
 
 ## Prompt examples
@@ -24,7 +28,5 @@ Key aspects:
 - **Handling of Missing Modules:** Automatically installs any missing Python modules required for the execution of the generated code.
 - **Error Handling:** Captures and handles exceptions during code execution.
 - **Security Concerns:** It's important to note that executing code generated in this manner can be unsafe, as it may execute arbitrary and potentially harmful code.
-
-⚠️ This script is a powerful tool but should be used with caution due to the risks associated with executing dynamically generated code.
 
 Interesting fact: this script and document were written by ChatGPT as part of the program to replace people with artificial intelligence.

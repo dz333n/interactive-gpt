@@ -39,9 +39,8 @@ def execute_string_as_code(code_string):
             print_colored(" InteractiveGPT: ✅ Executed", "green")
             break  # Break the loop if the code executed successfully
         except ModuleNotFoundError as e:
-            missing_module = str(e).split("'")[
-                1
-            ]  # Extract the module name from the exception message
+            # Extract the module name from the exception message
+            missing_module = str(e).split("'")[1]
 
             install_module(missing_module)
         except Exception as e:

@@ -5,7 +5,7 @@ import platform
 
 rules = f"""
 Rules:
-1. If this is possible in any way using Python (including via external libraries from “pip”), respond ONLY with the Python code needed to perform the action.
+1. If this is possible in any way using Python, respond ONLY with the Python code needed to perform the action.
 2. Make sure your code is correct and functions as requested. Write comments where it’s reasonably necessary.
 3. The target operating system for the code is {platform.platform()}.
 """

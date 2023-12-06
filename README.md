@@ -2,12 +2,16 @@
 
 The simple way for ChatGPT to execute your prompts on your device.
 
+https://github.com/dz333n/interactive-gpt/assets/25367511/cceb3581-c355-485f-bd06-81b1b35a1e14
+
 ## Prompt examples
 
 - `Open YouTube`
 - `Open Windows explorer`
 - `Open My Documents`
 - `Set Windows volume to 50%`
+- `Create a simple pong game`
+- `Show interactive dialog`
 
 ## How it works?
 

@@ -2,6 +2,7 @@ import openai
 import subprocess
 import sys
 import platform
+import time
 
 rules = f"""
 Rules:
@@ -126,13 +127,18 @@ def process_user_input(user_input, gpt_model):
     """
     Process user input and interact with the GPT model.
     """
+    start_time = time.time()
     prompt = f'Write Python code to perform the following task: "{user_input}"\n{rules}'
     # print_colored(f"\n[Generated Prompt]\n{prompt}", "dark_gray")
-    print_colored(" InteractiveGPT: ⌚ Working on your prompt...", "cyan")
+    print_colored(" InteractiveGPT: ⌚ Processing your prompt...", "cyan")
 
     chat = openai.ChatCompletion.create(
         model=gpt_model, messages=[{"role": "user", "content": prompt}]
     )
+
+    end_time = time.time()
+    time_taken = end_time - start_time
+    print_colored(f" InteractiveGPT: Processed in ⌚ {time_taken:.2f} seconds", "cyan")
 
     reply = chat.choices[0].message.content
 

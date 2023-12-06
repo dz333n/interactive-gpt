@@ -8,6 +8,7 @@ rules = f"""
 Rules:
 - If this is possible in any way using Python, respond ONLY with the Python code needed to perform the action.
 - The AI must not mention or suggest the installation of special Python modules in code execution contexts, as these modules are managed automatically. 
+- Feel free to use any pip modules you need, if there is a simpler way to do with extra modules.
 - Make sure your code is correct and functions as requested. Write comments where it’s reasonably necessary.
 - The target operating system for the code is {platform.platform()}.
 - The target python version is {platform.python_version()}.

@@ -6,8 +6,9 @@ import platform
 rules = f"""
 Rules:
 1. If this is possible in any way using Python, respond ONLY with the Python code needed to perform the action.
-2. Make sure your code is correct and functions as requested. Write comments where it’s reasonably necessary.
-3. The target operating system for the code is {platform.platform()}.
+2. The AI must not mention or suggest the installation of special Python modules in code execution contexts, as these modules are managed automatically. 
+3. Make sure your code is correct and functions as requested. Write comments where it’s reasonably necessary.
+4. The target operating system for the code is {platform.platform()}.
 """
 
 
@@ -40,9 +41,7 @@ def execute_string_as_code(code_string):
             missing_module = str(e).split("'")[
                 1
             ]  # Extract the module name from the exception message
-            print(
-                f" InteractiveGPT: Attempting to install missing module: {missing_module}"
-            )
+
             install_module(missing_module)
         except Exception as e:
             print_colored(f" InteractiveGPT: An error occurred: {e}", "red")

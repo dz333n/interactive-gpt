@@ -126,7 +126,7 @@ def process_user_input(user_input, gpt_model):
     """
     Process user input and interact with the GPT model.
     """
-    prompt = f'Write a python script that would perform this user request: "{user_input}"\n{rules}'
+    prompt = f'Write Python code to perform the following task: "{user_input}"\n{rules}'
     print_colored(f"\n[Generated Prompt]\n{prompt}", "dark_gray")
     print_colored(" InteractiveGPT: ⌚ Working on your prompt...", "cyan")
 

@@ -1,11 +1,13 @@
 import openai
 import subprocess
 import sys
+import platform
 
-rules = """
+rules = f"""
 Rules:
-1. If it is possible, no extra info required. Please reply with only the result Python code.
-2. If it is impossible or the request does not make sense, then start your response with "Error:"'
+1. If this is possible in any way using Python (including via external libraries from “pip”), respond ONLY with the Python code needed to perform the action.
+2. Make sure your code is correct and functions as requested. Write comments where it’s reasonably necessary.
+3. The target operating system for the code is {platform.platform()}.
 """
 
 
@@ -13,7 +15,10 @@ def install_module(module_name):
     """
     Install a Python module using pip.
     """
-    print_colored(f" ⚠️ Attempting to install missing module: {module_name}", "yellow")
+    print_colored(
+        f" InteractiveGPT: Attempting to install missing module: {module_name}",
+        "yellow",
+    )
     subprocess.check_call([sys.executable, "-m", "pip", "install", module_name])
 
 
@@ -24,21 +29,23 @@ def execute_string_as_code(code_string):
     """
     while True:
         try:
-            print_colored(code_string, "yellow")
+            print_colored(f"\n ChatGPT:\n{code_string}\n", "yellow")
             print_colored("\n 😱😱😱 Executing the code 😱😱😱 \n", "cyan")
 
             exec(code_string)
 
-            print_colored(" ✅ Executed", "green")
+            print_colored(" InteractiveGPT: ✅ Executed", "green")
             break  # Break the loop if the code executed successfully
         except ModuleNotFoundError as e:
             missing_module = str(e).split("'")[
                 1
             ]  # Extract the module name from the exception message
-            print(f"Attempting to install missing module: {missing_module}")
+            print(
+                f" InteractiveGPT: Attempting to install missing module: {missing_module}"
+            )
             install_module(missing_module)
         except Exception as e:
-            print_colored(f"An error occurred: {e}", "red")
+            print_colored(f" InteractiveGPT: An error occurred: {e}", "red")
             break  # Exit the loop if an error other than ModuleNotFoundError occurs
 
 
@@ -47,11 +54,12 @@ def print_colored(text, color):
     Print text in the specified color to the console.
     """
     colors = {
-        "standard": "\033[0m",
+        "standard": "\033[0m",  # Reset to default color
         "cyan": "\033[96m",
         "yellow": "\033[93m",
         "red": "\033[91m",
         "green": "\033[92m",
+        "dark_gray": "\033[90m",  # Dark gray color
     }
     color_code = colors.get(color, colors["standard"])
     print(f"{color_code}{text}{colors['standard']}")
@@ -103,10 +111,10 @@ def main():
     if len(sys.argv) > 1:
         gpt_model = sys.argv[1]
 
-    print_colored(f"Interactive GPT, running {gpt_model}", "green")
+    print_colored(f" InteractiveGPT: Using {gpt_model}", "green")
 
     while True:
-        user_input = input(" > Your request: ")
+        user_input = input(" Your Request: ")
         if user_input.lower() == "exit":
             print_colored("Bye", "cyan")
             break
@@ -118,10 +126,9 @@ def process_user_input(user_input, gpt_model):
     """
     Process user input and interact with the GPT model.
     """
-    print_colored(" ⌚ Working on your prompt...", "cyan")
-    prompt = (
-        f'Write a python that would perform the next action: "{user_input}"\n{rules}'
-    )
+    prompt = f'Write a python script that would perform this user request: "{user_input}"\n{rules}'
+    print_colored(f"\n[Generated Prompt]\n{prompt}", "dark_gray")
+    print_colored(" InteractiveGPT: ⌚ Working on your prompt...", "cyan")
 
     chat = openai.ChatCompletion.create(
         model=gpt_model, messages=[{"role": "user", "content": prompt}]
@@ -129,10 +136,14 @@ def process_user_input(user_input, gpt_model):
 
     reply = chat.choices[0].message.content
 
-    if reply.startswith("Error:"):
-        print_colored(reply, "red")
+    code = extract_python_code(reply)
+    if not code:
+        print_colored(f" ChatGPT: {reply}", "yellow")
+        print_colored(
+            f" InteractiveGPT: No code found in GPT's response. Nothing to execute.",
+            "red",
+        )
     else:
-        code = extract_python_code(reply)
         execute_string_as_code(code)
 
 

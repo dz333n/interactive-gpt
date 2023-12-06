@@ -110,7 +110,6 @@ def main():
         log("Error: provide your OpenAI token in ./token file", "red")
         sys.exit(1)
 
-    open_ai = OpenAI(api_key=token)
     gpt_model = "gpt-4"
 
     if len(sys.argv) > 1:
@@ -137,10 +136,10 @@ def main():
             log("Bye", "cyan")
             break
 
-        process_user_input(user_input, gpt_model, open_ai)
+        process_user_input(user_input, gpt_model, token)
 
 
-def process_user_input(user_input, gpt_model, openai):
+def process_user_input(user_input, gpt_model, token):
     """
     Process user input and interact with the GPT model.
     """
@@ -149,6 +148,7 @@ def process_user_input(user_input, gpt_model, openai):
     # log(f"\n[Generated Prompt]\n{prompt}", "dark_gray")
     log("InteractiveGPT: ⌚ Processing your prompt...", "cyan")
 
+    openai = OpenAI(api_key=token)
     stream = openai.chat.completions.create(
         model=gpt_model, messages=[{"role": "user", "content": prompt}], stream=True
     )

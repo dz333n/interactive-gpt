@@ -14,6 +14,8 @@ Rules:
 - The target operating system for the code is {platform.platform()}.
 - The target python version is {platform.python_version()}.
 - It's important to wrap the code with the python code markdown tag.
+- It's forbidden to produce more than one python code block. You must put everything into a single python markdown block.
+- If a custom asset is requested, for example, a sample picture - it's forbidden to write a code that looks for a sample file. If sample file needed then create one.
 """
 
 
@@ -26,7 +28,10 @@ def execute_command_line(command_line):
         f"InteractiveGPT: ⚠️  Executing: {command_line}",
         "yellow",
     )
-    subprocess.check_call(command_line.split(" "))
+    try:
+        subprocess.check_call(command_line.split(" "))
+    except Exception as e:
+        log(f"InteractiveGPT: Command line exec error occurred: {e}", "red")
 
 
 def install_pending_packages(code):

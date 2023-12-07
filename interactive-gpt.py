@@ -7,7 +7,7 @@ import time
 rules = f"""
 Rules:
 - If this is possible in any way using Python, respond ONLY with the Python code needed to perform the action.
-- The AI must not mention or suggest the installation of special Python modules in code execution contexts, as these modules are managed automatically. 
+- If a dependency (like a pip package) needs to be installed before running the generated code, add a comment saying # !!! <command to run to set up the dependency> at the very top of the generated source.
 - Feel free to use any pip modules you need, if there is a simpler way to do with extra modules.
 - Make sure your code is correct and functions as requested. Write comments where it’s reasonably necessary.
 - The target operating system for the code is {platform.platform()}.
@@ -18,6 +18,22 @@ Rules:
 
 def print_gpt(text):
     print(f"\033[93m{text}", end="\033[93m")
+
+
+def execute_command_line(command_line):
+    log(
+        f"InteractiveGPT: ⚠️  Executing: {command_line}",
+        "yellow",
+    )
+    subprocess.check_call(command_line.split(" "))
+
+
+def install_pending_packages(code):
+    lines = code.split("\n")
+    for line in lines:
+        if line.startswith("# !!!"):
+            command_line = line[6:]
+            execute_command_line(command_line)
 
 
 def install_module(module_name):
@@ -39,6 +55,8 @@ def execute_string_as_code(code_string):
     while True:
         try:
             log("\nInteractiveGPT: 😱😱😱 Executing the code 😱😱😱 \n", "cyan")
+
+            install_pending_packages(code_string)
 
             exec(code_string)
 

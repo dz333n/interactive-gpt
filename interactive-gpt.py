@@ -48,14 +48,22 @@ def install_module(module_name):
     subprocess.check_call([sys.executable, "-m", "pip", "install", module_name])
 
 
-def execute_string_as_code(code_string):
+def execute_string_as_code(reply):
     """
     Execute a multi-line string as Python code, handle exceptions, and
     attempt to install missing modules.
     """
+    code_string = extract_python_code(reply)
+    if not code_string:
+        log(
+            f"InteractiveGPT: No code found in GPT's response. Nothing to execute.",
+            "red",
+        )
+        pass
+
     while True:
         try:
-            install_pending_packages(code_string)
+            install_pending_packages(reply)
 
             log("\nInteractiveGPT: 😱😱😱 Executing the code 😱😱😱 \n", "cyan")
 
@@ -188,14 +196,7 @@ def process_user_input(user_input, gpt_model, token):
     time_taken = end_time - start_time
     log(f"InteractiveGPT: Processed in ⌚ {time_taken:.2f} seconds", "cyan")
 
-    code = extract_python_code(reply)
-    if not code:
-        log(
-            f"InteractiveGPT: No code found in GPT's response. Nothing to execute.",
-            "red",
-        )
-    else:
-        execute_string_as_code(code)
+    execute_string_as_code(reply)
 
 
 if __name__ == "__main__":

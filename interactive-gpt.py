@@ -9,7 +9,7 @@ Rules:
 - If this is possible in any way using Python, respond ONLY with the Python code needed to perform the action.
 - If a dependency (like a pip package) needs to be installed before running the generated code, add a comment saying # !!! <command to run to set up the dependency> at the very top of the generated source.
 - If package needs to be installed then # !!! <command to run to set up the dependency> is the ONLY way you can explain this, there is no need for additional comments or explanations. It is forbidden to change this format.
-- Feel free to use any pip modules you need, if there is a simpler way to do with extra modules.
+- ALWAYS USE extra pip packages if this will make the code smaller, simpler or faster.
 - Make sure your code is correct and functions as requested. Write comments where it’s reasonably necessary.
 - The target operating system for the code is {platform.platform()}.
 - The target python version is {platform.python_version()}.
